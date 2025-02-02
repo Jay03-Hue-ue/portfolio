@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'f1';
+    src: url('D:\website\Jay\fonts\Swiss 911 Compressed Regular.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'f2';
+    src: url('fonts/SoleSans-RegularExtended.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  
