@@ -1,7 +1,7 @@
 {
   "scripts": {
     "start": "vite",
-    "build": "tailwindcss -i ./css/main.css -o ./dist/styles.css --minify",
+    
     "dev": "vite"
   },
   "devDependencies": {
