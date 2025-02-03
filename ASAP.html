@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jay Challa portfolio</title>
+    <link rel="icon" type="image/png" href="res/Imagen Png 02.png">
+    <link href="dist/styles.css" media="all" rel="stylesheet" type="text/css">
+   
+    <style>
+         /* Tailwind utility classes for responsiveness */
+        @media (max-width: 640px) {
+            #prev-btn, #next-btn {
+                font-size: 2xl; /* Smaller text size for mobile */
+                padding: 2px;   /* Reduced padding for mobile */
+                width: 40px;    /* Reduced size for better touch */
+                height: 40px;
+            }
+            #prev-btn {
+                left: 10%; /* Adjust left button on small screens */
+            }
+            #next-btn {
+                right: 10%; /* Adjust right button on small screens */
+            }
+            #video-card {
+                padding: 15px; /* Adjust padding */
+            }
+            #video-player {
+                width: 100%; /* Full width for video */
+            }
+        }
+
+        @media (max-width: 480px) {
+            #prev-btn, #next-btn {
+                font-size: 1.5xl;  /* Even smaller for small phones */
+                padding: 4px;      /* Smaller padding for small screens */
+                width: 35px;
+                height: 35px;
+            }
+            #prev-btn {
+                left: 5%; /* Move buttons closer on very small screens */
+            }
+            #next-btn {
+                right: 5%; 
+            }
+            #video-card {
+                padding: 10px; /* Reduce card padding */
+            }
+            #video-player {
+                width: 100%; /* Ensure the video is full-width on mobile */
+            }
+        }
+        .more-wraper-center {
+            position: relative;
+            width: 120px!important;
+            max-width: 120px;
+            height: 120px;
+            left: 0;
+            right: 0; 
+            margin: 0 auto;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .more-wraper-center.more-wraper-center-demos {
+            top: -23px!important;
+        }
+
+        .more-button-bg-center {
+            background: none;
+            border: 2px dashed #e0e0e0;
+        }
+
+        .more-button-circle {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-clip: content-box;
+            padding: 2.5px;
+            cursor: pointer;
+        }
+
+        .more-wraper-center:hover .more-button-circle {
+            animation: spin 5s linear infinite;
+        }
+
+        .more-button-txt-center {
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            width: 120px!important;
+            transform: translate(-50%, -50%);
+            font-family: 'Oswald', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: normal;
+            color: #e0e0e0;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* Full screen wrapper to hold vertical lines, background */
+        .vertical-lines-wrapper {
+            position: fixed;
+            width: 100%;
+            height: 100%; /* Ensures full height of the page */
+            left: 0;
+            top: 0;
+            margin: 0;
+            -webkit-pointer-events: none;
+            -moz-pointer-events: none;
+            pointer-events: none;
+            z-index: -1; /* Ensures it stays behind other content */
+        }
+
+        /* Container for the lines */
+        .vertical-lines {
+            position: relative;
+            width: 100%;
+            height: 100%; /* This will ensure the lines fill the entire screen */
+            left: 0;
+            top: 0;
+        }
+
+        /* Vertical effect that creates the lines */
+        .vertical-effect {
+            position: relative;
+            width: 25%; /* Each line takes 25% of the width */
+            height: 100%; /* Full height, will adapt to the page height */
+            float: left;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            border-right: 1px solid rgba(119, 119, 119, .2);
+        }
+
+        /* Raindrop effect before the vertical line */
+        .vertical-effect::before {
+            content: "";
+            position: absolute;
+            display: block;
+            width: 3px;
+            height: 40%; /* Adjust height as per your requirement */
+            background: rgb(89, 89, 89);
+            opacity: 0%;
+            animation-duration: 6s;
+            animation-timing-function: ease-out;
+            animation-iteration-count: infinite;
+        }
+
+        /* Apply animations for first and last lines */
+        .vertical-effect:first-child::before {
+            left: 100%;
+            top: 0;
+            animation-name: raindrop-left;
+        }
+
+        .vertical-effect:last-child::before {
+            right: 100%;
+            bottom: 0;
+            animation-name: raindrop-right;
+        }
+
+        /* Animation for raindrop left side */
+        @keyframes raindrop-left {
+            0% {
+                top: -100%;
+                opacity: 0;
+            }
+            50% {
+                top: 100%;
+                opacity: 1;
+            }
+            100% {
+                top: -100%;
+                opacity: 0;
+            }
+        }
+
+        /* Animation for raindrop right side */
+        @keyframes raindrop-right {
+            0% {
+                bottom: -100%;
+                opacity: 0;
+            }
+            50% {
+                bottom: 100%;
+                opacity: 1;
+            }
+            100% {
+                bottom: -100%;
+                opacity: 0;
+            }
+        }
+
+        /* Content section that stays above the background */
+        section {
+            position: relative;
+            z-index: 1; /* This ensures the content stays above the raindrop effect */
+            
+            
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .dot-button {
+            font-size: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .dot-button.open {
+            transform: rotate(90deg);
+        }
+        nav {
+            position: relative;
+            z-index: 10; /* Ensure the navbar stays above other content */
+        }
+
+        #rightDrawer {
+            z-index: 5; /* Drawer sits below the navbar */
+        }
+
+        #overlay {
+            z-index: 15; /* Overlay sits below the drawer */
+        }
+        .text-outline {
+            text-shadow: 2px 2px 0 white, -2px -2px 0 white, 2px -2px 0 white, -2px 2px 0 white;
+        }
+        
+
+        .more-wraper-center {
+            position: relative;
+            width: 120px !important;
+            max-width: 120px;
+            height: 120px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .more-wraper-center.more-wraper-center-demos {
+            top: -23px !important;
+        }
+
+        .more-button-bg-center {
+            background: none;
+            border: 2px dashed #e0e0e0;
+        }
+
+        .more-button-circle {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-clip: content-box;
+            padding: 2.5px;
+            cursor: pointer;
+        }
+
+        .more-wraper-center:hover .more-button-circle {
+            animation: spin 5s linear infinite;
+        }
+
+        .more-button-txt-center {
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            width: 120px !important;
+            transform: translate(-50%, -50%);
+            font-family: 'Oswald', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: center;
+            letter-spacing: normal;
+            color: #e0e0e0;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+        .prev-next-btn {
+            z-index: 20;
+            width: 100px; /* Set width */
+            height: 100px; /* Set height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%; /* Make it a perfect circle */
+        }
+    
+        .prev-next-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Slight hover effect */
+        }
+
+        #video-card {
+            z-index: 10; /* Ensure the video card itself is behind the buttons */
+            backdrop-filter: blur(10px); /* Apply blur to the background */
+        }
+    
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        
+    </style>
+</head>
+<body class="bg-neutral-900">
+
+    <!-- Raindrop background effect -->
+    <div class="vertical-lines-wrapper">
+        <div class="vertical-lines">
+            <div class="vertical-effect"></div>
+            <div class="vertical-effect"></div>
+            <div class="vertical-effect"></div>
+            <div class="vertical-effect"></div>
+        </div>            
+    </div>
+
+    <div class="relative">
+        <!-- Navbar -->
+         <div class="">
+            <nav class="text-white pr-20 pl-20 pt-10 pb-10 flex justify-between items-center">
+                <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+
+                </a>
+                
+                <button id="menuButton" class="dot-button text-7xl focus:outline-none">&#8943;</button>
+            </nav>
+         </div>
+        
+
+        <!-- Right Drawer -->
+        <div id="rightDrawer" class="fixed top-0 right-0 font-swiss text-7xl text-center bg-neutral-950 w-3/4 h-full shadow-lg transform translate-x-full transition-transform duration-300 flex items-center justify-center">
+            
+            <div class="p-4">
+                <ul>
+                    <li class="mb-2 p-2 "><a href="index.html" class=" text-outline">Home</a>
+                    </li>
+                    <li class="mb-2 p-2"><a href="index.html#about" class="text-white ">About</a></li>
+                    <li class="mb-2 p-2"><a href="index.html#work" class="text-white ">Work</a></li>
+                    <li class="mb-2 p-2"><a href="index.html#skill" class="text-white ">Skills</a></li>
+                    <li class="mb-2 p-2"><a href="index.html#history" class="text-white ">History</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Left Drawer -->
+        <div id="leftDrawer" class="fixed bg-black opacity-20  top-0 left-0 w-1/4 h-full transform -translate-x-full transition-transform duration-300">
+        </div>
+
+        <!-- Overlay -->
+        <div id="overlay" class="fixed bg-black opacity-50 top-0 left-0 w-1/4 h-screen  hidden"></div>
+    </div>
+
+    <script>
+        const menuButton = document.getElementById('menuButton');
+        const rightDrawer = document.getElementById('rightDrawer');
+        const leftDrawer = document.getElementById('leftDrawer');
+        const overlay = document.getElementById('overlay');
+
+        menuButton.addEventListener('click', () => {
+            rightDrawer.classList.toggle('translate-x-full');
+            leftDrawer.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+            menuButton.classList.toggle('open');
+            menuButton.innerHTML = rightDrawer.classList.contains('translate-x-full') ? '&#8943;' : '&#8226;';
+        });
+
+        overlay.addEventListener('click', () => {
+            rightDrawer.classList.add('translate-x-full');
+            leftDrawer.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            menuButton.classList.remove('open');
+            menuButton.innerHTML = '&#8943;';
+        });
+    </script>
+    
+    <section class="pt-12 p-10 pb-20">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16">
+            <!-- Video containers with lazy loading and hover effects -->
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/01.webm" type="video/webm"> 
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/01.mp4" type="video/mp4">
+                    <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/01.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        
+            <!-- Repeat for other video items -->
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/02.webm" type="video/webm">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/02.mp4" type="video/mp4">
+                     <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/02.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/03.webm" type="video/webm">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/03.mp4" type="video/mp4">
+                     <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/03.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/04.webm" type="video/webm">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/04.mp4" type="video/mp4">
+                     <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/04.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16 pt-20">
+            <!-- Video containers with lazy loading and hover effects -->
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/05.webm" type="video/webm"> 
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/05.mp4" type="video/mp4">
+                    <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/05.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        
+            <!-- Repeat for other video items -->
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/16.webm" type="video/webm">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/16.mp4" type="video/mp4">
+                     <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/16.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/07.webm" type="video/webm">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/07.mp4" type="video/mp4">
+                     <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/07.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/08.webm" type="video/webm">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/08.mp4" type="video/mp4">
+                     <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/08.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16 pt-20">
+            <!-- Video containers with lazy loading and hover effects -->
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/09.webm" type="video/webm"> 
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/09.mp4" type="video/mp4">
+                    <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/09.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        
+            <!-- Repeat for other video items -->
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/10.webm" type="video/webm">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/10.mp4" type="video/mp4">
+                     <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/10.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/11.webm" type="video/webm">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/11.mp4" type="video/mp4">
+                     <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/11.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/12.webm" type="video/webm">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/12.mp4" type="video/mp4">
+                     <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/12.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-16 pt-20">
+            <!-- Video containers with lazy loading and hover effects -->
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/13.webm" type="video/webm"> 
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/13.mp4" type="video/mp4">
+                    <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/13.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+        
+            <!-- Repeat for other video items -->
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/14.webm" type="video/webm">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/14.mp4" type="video/mp4">
+                     <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/14.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+
+            <div class="video-container flex justify-center relative border p-1.5 border-neutral-600 rounded-[40px] group">
+                <video class="video-item h-auto max-w-full rounded-[40px] aspect-w-9 aspect-h-16" loop muted loading="lazy">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/15.webm" type="video/webm">
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/ASAP/15.mp4" type="video/mp4">
+                     <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+                <div class="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div class="more-wraper-center">
+                        <button class="more-button-bg-center more-button-circle" onclick="openCard('https://storage.googleapis.com/portfolio-jay/vedio/ASAP/15.mp4')"></button>
+                        <span class="more-button-txt-center">Live Preview</span>
+                    </div>
+                </div>
+                <div class="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-[40px]"></div>
+            </div>
+
+            
+        
+        </div>
+        
+    </section>
+
+
+
+
+    <div id="video-card" class="hidden fixed inset-0 bg-black bg-opacity-85 z-50 flex justify-center items-center">
+        <!-- Close Button -->
+        <button onclick="closeCard()" class="absolute top-0 right-0 p-4 rounded-full">
+            <img src="res/close.png" alt="Close" class="w-8 h-8">
+        </button>
+    
+        <!-- Previous Button -->
+        <button id="prev-btn" class="prev-next-btn absolute top-1/2 left-1/4 transform -translate-y-1/2 p-4 border-2 border-dotted bg-black bg-opacity-80 border-white rounded-full text-white text-2xl sm:text-4xl font-swiss hover:bg-white/20 sm:left-1/3 md:left-1/3 lg:left-1/3 xl:left-1/4">
+            &lt;
+        </button>
+    
+        <!-- Next Button -->
+        <button id="next-btn" class="prev-next-btn absolute top-1/2 right-1/4 transform -translate-y-1/2 p-4 border-2 border-dotted bg-black bg-opacity-80 border-white rounded-full text-white text-2xl sm:text-4xl font-swiss hover:bg-white/20 sm:right-1/3 md:right-1/3 lg:right-1/3 xl:right-1/4">
+            &gt;
+        </button>
+    
+        <!-- Video Container -->
+        <div class="rounded-lg p-14 relative md:py-70 max-w-xl mx-auto w-full">
+            <div class="relative">
+                <!-- Video Player -->
+                <video id="video-player" controls class="w-full rounded-[40px] border p-1.5">
+                    <source src="" type="video/mp4">
+                    <source src="" type="video/webm"> <!-- Added WebM source -->
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentVideoIndex = 0;
+        const videos = [...Array(16).keys()]
+            .map(i => i + 1)
+            .filter(num => num !== 6)
+             // Exclude 11.mp4
+            .map(num => `https://storage.googleapis.com/portfolio-jay/vedio/ASAP/${num.toString().padStart(2, '0')}.mp4`);
+    
+        // Open the modal and play the selected video
+        function openCard(videoSrc) {
+            const videoCard = document.getElementById('video-card');
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.src = videoSrc;
+            videoCard.classList.remove('hidden');
+            videoPlayer.play();
+        }
+    
+        // Close the modal
+        function closeCard() {
+            const videoCard = document.getElementById('video-card');
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.pause();
+            videoCard.classList.add('hidden');
+        }
+    
+        // Go to the next video
+        document.getElementById('next-btn').addEventListener('click', function () {
+            currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+            if (videos[currentVideoIndex] === 'https://storage.googleapis.com/portfolio-jay/vedio/ASAP/06.mp4') {
+                currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+            }
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.src = videos[currentVideoIndex];
+            videoPlayer.load();
+            videoPlayer.play();
+        });
+    
+        // Go to the previous video
+        document.getElementById('prev-btn').addEventListener('click', function () {
+            currentVideoIndex = (currentVideoIndex - 1 + videos.length) % videos.length;
+            if (videos[currentVideoIndex] === 'https://storage.googleapis.com/portfolio-jay/vedio/ASAP/06.mp4') {
+                currentVideoIndex = (currentVideoIndex - 1 + videos.length) % videos.length;
+            }
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.src = videos[currentVideoIndex];
+            videoPlayer.load();
+            videoPlayer.play();
+        });
+    
+        // Lazy-load videos when they come into view
+        document.addEventListener("DOMContentLoaded", function () { 
+            const videos = document.querySelectorAll('.video-item');
+    
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.play();
+                    } else {
+                        entry.target.pause();
+                    }
+                });
+            }, { threshold: 0.5 });
+    
+            videos.forEach(video => observer.observe(video));
+        });
+    </script>
+    
+    
+</body>
+</html>
