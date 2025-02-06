@@ -1182,7 +1182,7 @@
             <div class="relative">
                 <!-- Video Player -->
                 <video id="video-player" controls class="w-full rounded-[40px] border p-1.5">
-                    
+                    <source src="https://storage.googleapis.com/portfolio-jay/vedio/Elite Glow/01.mp4" type="video/mp4">
                     <source src="https://storage.googleapis.com/portfolio-jay/vedio/Elite Glow/01.webm" type="video/webm"> <!-- Added WebM source -->
                     Your browser does not support the video tag.
                 </video>
@@ -1195,7 +1195,7 @@
         const videos = [...Array(46).keys()]
             .map(i => i + 1)
             .filter(num => num !== 11) // Exclude 11.mp4
-            .map(num => `https://storage.googleapis.com/portfolio-jay/vedio/Elite Glow/${num.toString().padStart(2, '0')}.mp4`);
+            .map(num => `https://storage.googleapis.com/portfolio-jay/vedio/Elite Glow/${num.toString().padStart(2, '0')}.webm`);
     
         // Open the modal and play the selected video
         function openCard(videoSrc) {
